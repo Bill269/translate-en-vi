@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="vi" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Translator — English ↔ Tiếng Việt</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div class="bg-mesh" aria-hidden="true"></div>
+
+<div class="app-wrapper">
+  <!-- Header -->
+  <header class="app-header entrance">
+    <div class="header-brand">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <path d="M21 12c0 1.2-3 4-6 4s-6-2.8-6-4 3-4 6-4 6 2.8 6 4Z"/>
+        <path d="M14 9h2M9 9h2M7 15h10M12 12v4"/>
+      </svg>
+      <span class="header-title">Translator</span>
+    </div>
+    <div class="header-actions">
+      <button class="theme-toggle ui-lang-toggle" id="uiLangToggle" aria-label="Đổi ngôn ngữ giao diện" title="Đổi ngôn ngữ giao diện" data-i18n-aria="uiLangAria">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M2 12h20"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
+        <span class="lang-code" id="uiLangLabel">VI</span>
+      </button>
+      <button class="theme-toggle" id="themeToggle" aria-label="Chuyển theme" title="Chuyển theme" data-i18n-aria="themeAria">
+        <svg class="icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><circle cx="12" cy="12" r="5"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg>
+        <svg class="icon-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+      </button>
+      <div class="history-trigger">
+        <button class="btn" id="historyBtn" aria-label="Lịch sử dịch" aria-expanded="false" aria-controls="historyDropdown" data-i18n-aria="historyAria">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5"/></svg>
+          <span data-i18n="historyBtn">Lịch sử dịch</span>
+        </button>
+        <div class="history-dropdown" id="historyDropdown" role="menu" aria-label="Lịch sử dịch" data-i18n-aria="historyAria">
+          <div class="history-header">
+            <span class="history-title" data-i18n="historyTitle">Lịch sử dịch</span>
+            <button class="history-clear" id="clearHistory" type="button" data-i18n="clearHistory">Xóa tất cả</button>
+          </div>
+          <div class="history-list" id="historyList">
+            <div class="history-empty" data-i18n="historyEmpty">Chưa có lịch sử dịch</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- Main -->
+  <main class="main-content">
+    <div class="translator-grid">
+      <!-- Source Panel -->
+      <section class="panel glass-shell cascade-1 entrance entrance-delay-1" aria-label="Ngôn ngữ nguồn" data-i18n-aria="srcLabel">
+        <div class="glass-core" style="padding: 1.5rem;">
+          <div class="panel-header">
+            <span class="label"><span data-i18n="srcLabel">Ngôn ngữ nguồn</span></span>
+            <span class="lang-badge" id="srcLangBadge">Tự động phát hiện</span>
+          </div>
+          <textarea id="srcText" placeholder="Nhập hoặc dán văn bản tiếng Anh..." spellcheck="false" aria-label="Văn bản nguồn" data-gramm="false" data-i18n-ph="srcPh" data-i18n-aria="srcAria"></textarea>
+          <div class="toolbar">
+            <button class="btn" id="pasteBtn" type="button" aria-label="Dán từ clipboard" data-i18n-aria="pasteAria">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+              <span data-i18n="paste">Dán</span>
+            </button>
+            <button class="btn" id="fileBtn" type="button" aria-label="Mở file .txt" data-i18n-aria="fileAria">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M14 2v4a2 2 0 0 0 2 2h4"/><path d="M4.268 21A2 2 0 0 0 6 22h12a2 2 0 0 0 2-2V7.268a2 2 0 0 0-.586-1.414L15.268 2.586A2 2 0 0 0 14.004 2H6a2 2 0 0 0-2 2v3"/></svg>
+              <span data-i18n="file">File</span>
+            </button>
+            <input type="file" id="fileInput" accept=".txt,text/plain" hidden>
+            <button class="btn" id="speakSrcBtn" type="button" aria-label="Phát âm văn bản nguồn" data-i18n-aria="speakSrcAria">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M15.54 8.46a5 5 0 0 1 0 7.07"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14"/></svg>
+              <span data-i18n="speak">Phát âm</span>
+            </button>
+            <button class="btn" id="copySrcBtn" type="button" aria-label="Sao chép văn bản nguồn" data-i18n-aria="copySrcAria">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+              <span data-i18n="copy">Sao chép</span>
+            </button>
+            <span class="char-count" id="srcCount">0 / 5,000</span>
+          </div>
+        </div>
+      </section>
+
+      <!-- Center Swap -->
+      <div class="center-divider entrance entrance-delay-2">
+        <button class="swap-btn" id="swapBtn" aria-label="Đổi chiều ngôn ngữ" title="Đổi chiều (Ctrl+Shift+S)" data-i18n-aria="swapAria">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 7l-4 4 4 4"/><path d="M17 7l4 4-4 4"/><path d="M3 11h18"/></svg>
+        </button>
+      </div>
+
+      <!-- Target Panel -->
+      <section class="panel glass-shell cascade-2 entrance entrance-delay-3" aria-label="Ngôn ngữ đích" data-i18n-aria="dstLabel">
+        <div class="glass-core panel-output" style="padding: 1.5rem;">
+          <div class="panel-header">
+            <span class="label"><span data-i18n="dstLabel">Kết quả dịch</span></span>
+            <span class="lang-badge" id="dstLangBadge">Tiếng Việt</span>
+          </div>
+          <textarea id="dstText" placeholder="Kết quả dịch sẽ hiện tại đây..." readonly aria-label="Văn bản đích" data-gramm="false" data-i18n-ph="dstPh" data-i18n-aria="dstAria"></textarea>
+          <div class="toolbar">
+            <button class="btn" id="copyDstBtn" type="button" aria-label="Sao chép kết quả" data-i18n-aria="copyDstAria">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+              <span data-i18n="copy">Sao chép</span>
+            </button>
+            <button class="btn" id="speakDstBtn" type="button" aria-label="Phát âm kết quả" data-i18n-aria="speakDstAria">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M15.54 8.46a5 5 0 0 1 0 7.07"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14"/></svg>
+              <span data-i18n="speak">Phát âm</span>
+            </button>
+            <button class="btn btn-ai" id="aiChatBtn" type="button" aria-label="Hỏi AI" data-i18n-aria="aiChatAria">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3l1.8 4.6L18.5 9.4 13.8 11.2 12 15.8 10.2 11.2 5.5 9.4 10.2 7.6z"/><path d="M19 15l.9 2.3 2.3.9-2.3.9-.9 2.3-.9-2.3-2.3-.9 2.3-.9z"/></svg>
+              <span data-i18n="aiChat">Hỏi AI</span>
+            </button>
+            <span class="char-count" id="dstCount">0 / 5,000</span>
+          </div>
+        </div>
+      </section>
+    </div>
+  </main>
+
+  <!-- Footer -->
+  <footer class="app-footer entrance entrance-delay-5">
+    <p data-i18n="footer">Google Translate bản Việt — một trang, không rườm rà</p>
+  </footer>
+</div>
+
+<!-- AI Chat Popup -->
+<div class="ai-popup" id="aiPopup" hidden>
+  <div class="ai-popup-inner glass-shell">
+    <div class="ai-popup-header">
+      <span class="ai-popup-title">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3l1.8 4.6L18.5 9.4 13.8 11.2 12 15.8 10.2 11.2 5.5 9.4 10.2 7.6z"/><path d="M19 15l.9 2.3 2.3.9-2.3.9-.9 2.3-.9-2.3-2.3-.9 2.3-.9z"/></svg>
+        <span data-i18n="aiTitle">AI Chat</span>
+      </span>
+      <div class="ai-popup-actions">
+        <button class="btn" id="aiClearBtn" type="button" data-i18n="aiClear">Xóa hội thoại</button>
+        <button class="btn btn-icon" id="aiCloseBtn" type="button" aria-label="Đóng" data-i18n-aria="aiCloseAria">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M18 6L6 18M6 6l12 12"/></svg>
+        </button>
+      </div>
+    </div>
+
+    <div class="ai-context" id="aiContext" hidden>
+      <div class="ai-context-info">
+        <span class="ai-context-label" data-i18n="aiContextLabel">Ngữ cảnh:</span>
+        <span class="ai-context-src" id="aiContextSrc"></span>
+        <svg class="ai-context-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+        <span class="ai-context-dst" id="aiContextDst"></span>
+      </div>
+      <button class="ai-context-remove" id="aiContextRemove" type="button" aria-label="Xóa ngữ cảnh" data-i18n-aria="aiContextRemoveAria">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M18 6L6 18M6 6l12 12"/></svg>
+      </button>
+    </div>
+
+    <div class="ai-messages" id="aiMessages" aria-live="polite">
+      <div class="ai-empty" id="aiEmpty" data-i18n="aiEmpty">Hỏi AI về cách dùng, ví dụ, ngữ pháp của từ/câu đang dịch...</div>
+    </div>
+
+    <form class="ai-input-row" id="aiForm">
+      <textarea id="aiInput" rows="1" placeholder="Nhập câu hỏi..." data-i18n-ph="aiPh" aria-label="Câu hỏi cho AI" data-i18n-aria="aiInputAria"></textarea>
+      <button class="btn btn-primary ai-send" id="aiSendBtn" type="submit">
+        <span class="btn-content" data-i18n="aiSend">Gửi</span>
+      </button>
+    </form>
+  </div>
+</div>
+
+<!-- Toast Container -->
+<div class="toast-container" id="toastContainer" aria-live="polite" aria-atomic="true"></div>
+
+<script src="app.js"></script>
+</body>
+</html>
